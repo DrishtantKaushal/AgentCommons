@@ -1,0 +1,5 @@
+{
+  "name": "commons",
+  "version": "0.1.0",
+  "description": "AgentCommons — coordination layer for your terminal fleet. See other terminals, relay approvals, push messages."
+}
