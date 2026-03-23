@@ -2,9 +2,9 @@
 
 A communication layer for orchestrating multiple Claude Code terminals on one machine. An attention multiplexer.
 
-![AgentCommons Approval Flow](assets/AgentCommonsApproval.png)
+![AgentCommons Demo](assets/AgentCommonsDemo.gif)
 
-[Watch the demo video](https://github.com/DrishtantKaushal/AgentCommons/releases/download/v0.1.0/ApprovalAgentCommons.mp4)
+[Watch full demo video](https://github.com/DrishtantKaushal/AgentCommons/releases/download/v0.1.0/ApprovalAgentCommons.mp4)
 
 ## What it does
 
@@ -46,6 +46,7 @@ export PATH="$PATH:$(pwd)"
 ```
 
 **macOS users:** If the binary gets `killed` on first run, macOS Gatekeeper is blocking it. Fix with:
+
 ```bash
 # Build directly to PATH (avoids quarantine)
 go build -o /usr/local/bin/commons .
@@ -60,11 +61,13 @@ commons install
 ```
 
 This does three things:
+
 - Creates `~/.commons/` directory with a SQLite database
 - Writes a default config at `~/.commons/config.toml`
 - Registers the MCP server in Claude Code's settings (`~/.claude/settings.local.json`)
 
 Verify it worked:
+
 ```bash
 cat ~/.claude/settings.local.json  # Should show "commons" MCP server entry
 ```
@@ -86,6 +89,7 @@ Each terminal gets an auto-assigned name (e.g., "DawnSentry", "CleverGrove"). Yo
 ### 5. Verify they see each other
 
 In either terminal, type:
+
 ```
 /status
 ```
@@ -95,9 +99,11 @@ You should see both terminals listed with their names, state, and working direct
 ### 6. Try sending a task
 
 In Terminal 1, ask Claude to delegate work using `#Name`:
+
 ```
 Can we ask #CleverGrove to list all folders in the current directory?
 ```
+
 (Replace `#CleverGrove` with Terminal 2's actual name from `/status`)
 
 Terminal 2 receives the task, executes it autonomously, and sends results back.
@@ -105,31 +111,33 @@ Terminal 2 receives the task, executes it autonomously, and sends results back.
 ### 7. Try the approval relay
 
 In Terminal 1:
+
 ```
 Ask #CleverGrove to run ls -la in the home directory
 ```
 
 When Terminal 2 hits the "Do you want to proceed?" permission prompt:
+
 - Terminal 1's title bar shows the approval request
 - Press `1` to approve, `2` to deny, or `3` to dismiss
 - Terminal 2 automatically proceeds
 
 ### Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| `commons: command not found` | Add the binary to your PATH (see step 2) |
-| `killed` on macOS | Codesign the binary (see step 2, macOS note) |
-| `/status` shows no agents | Both terminals must use `commons run claude`, not just `claude` |
-| MCP server not connecting | Run `commons install` again, then restart Claude Code |
-| Daemon won't start | Check if port 7390 is in use: `lsof -i :7390` |
-| Terminal name collision | Use `commons run claude --name MyCustomName` |
+| Problem                        | Solution                                                            |
+| ------------------------------ | ------------------------------------------------------------------- |
+| `commons: command not found` | Add the binary to your PATH (see step 2)                            |
+| `killed` on macOS            | Codesign the binary (see step 2, macOS note)                        |
+| `/status` shows no agents    | Both terminals must use `commons run claude`, not just `claude` |
+| MCP server not connecting      | Run `commons install` again, then restart Claude Code             |
+| Daemon won't start             | Check if port 7390 is in use:`lsof -i :7390`                      |
+| Terminal name collision        | Use `commons run claude --name MyCustomName`                      |
 
 ## Architecture
 
 ```
 ┌─────────────┐     ┌─────────────┐
-│ Terminal 1   │     │ Terminal 2   │
+│ Terminal 1  │     │ Terminal 2  │
 │ ┌─────────┐ │     │ ┌─────────┐ │
 │ │Claude   │ │     │ │Claude   │ │
 │ │Code     │ │     │ │Code     │ │
@@ -144,8 +152,8 @@ When Terminal 2 hits the "Do you want to proceed?" permission prompt:
 │ └────┬────┘ │     │ └────┬────┘ │
 └──────┼──────┘     └──────┼──────┘
        │    WebSocket      │
-       └───────┬───────────┘
-         ┌─────┴─────┐
+       └────────┬──────────┘
+         ┌──────┴─────┐
          │  Daemon    │
          │ localhost  │
          │  :7390     │
@@ -165,15 +173,15 @@ When Terminal 2 hits the "Do you want to proceed?" permission prompt:
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `commons run claude` | Launch Claude Code with approval relay |
-| `commons run claude --name MyAgent` | Launch with a specific name |
-| `commons install` | One-time setup |
-| `commons server start` | Manually start daemon (auto-launches normally) |
-| `commons server stop` | Stop daemon |
-| `commons server status` | Daemon health check |
-| `commons status` | List all terminals |
+| Command                               | Description                                    |
+| ------------------------------------- | ---------------------------------------------- |
+| `commons run claude`                | Launch Claude Code with approval relay         |
+| `commons run claude --name MyAgent` | Launch with a specific name                    |
+| `commons install`                   | One-time setup                                 |
+| `commons server start`              | Manually start daemon (auto-launches normally) |
+| `commons server stop`               | Stop daemon                                    |
+| `commons server status`             | Daemon health check                            |
+| `commons status`                    | List all terminals                             |
 
 ## In-session commands (inside Claude Code)
 
