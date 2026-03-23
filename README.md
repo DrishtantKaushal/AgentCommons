@@ -2,6 +2,8 @@
 
 A communication layer for orchestrating multiple Claude Code terminals on one machine. An attention multiplexer.
 
+![AgentCommons Approval Flow](assets/AgentCommonsApproval.png)
+
 ## What it does
 
 - **See all terminals**: `/status` shows every Claude Code session, what they're working on
