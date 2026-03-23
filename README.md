@@ -173,7 +173,23 @@ When Terminal 2 hits the "Do you want to proceed?" permission prompt:
 
 **SQLite** — Persistent storage at `~/.commons/commons.db`. Slots survive session restarts.
 
-## Commands
+## MCP Tools
+
+The MCP server exposes these tools to Claude Code, enabling inter-terminal communication:
+
+| Tool | Description | Example trigger |
+|------|-------------|-----------------|
+| `commons_status` | List all agent terminals, their state, and working directory | "What terminals are running?", `/commons:status` |
+| `commons_push` | Send a message or task to another terminal by name | "Ask #CleverGrove to list the folders" |
+| `commons_inbox` | Check pending notifications and messages from other terminals | "Any updates?", `/commons:inbox` |
+| `commons_approve` | Approve a pending permission request for another terminal | "Approve #CleverGrove", `/commons:approve` |
+| `commons_deny` | Deny a pending permission request | "Deny #CleverGrove" |
+| `commons_history` | Show message history between terminals | "What was sent to #CleverGrove?" |
+| `commons_report_state` | Report this agent's state change to the daemon | Used internally for state tracking |
+
+Claude Code invokes these automatically based on natural language. When you say _"ask #CleverGrove to check the auth module"_, Claude calls `commons_push(target="CleverGrove", message="check the auth module")`.
+
+## CLI Commands
 
 | Command                               | Description                                    |
 | ------------------------------------- | ---------------------------------------------- |
@@ -185,11 +201,11 @@ When Terminal 2 hits the "Do you want to proceed?" permission prompt:
 | `commons server status`             | Daemon health check                            |
 | `commons status`                    | List all terminals                             |
 
-## In-session commands (inside Claude Code)
+## Slash Commands (inside Claude Code)
 
-- `/status` — See all terminals
-- `/inbox` — Check pending notifications
-- `/approve @Name` — Approve a blocked terminal
+- `/commons:status` — See all terminals
+- `/commons:inbox` — Check pending notifications
+- `/commons:approve @Name` — Approve a blocked terminal
 - `/deny @Name` — Deny a request
 
 ## How approval relay works
