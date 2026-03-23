@@ -4,6 +4,8 @@ A communication layer for orchestrating multiple Claude Code terminals on one ma
 
 ![AgentCommons Demo](assets/AgentCommonsDemo.gif)
 
+![AgentCommons Approval Flow](assets/AgentCommonsApproval.png)
+
 [Watch full demo video](https://github.com/DrishtantKaushal/AgentCommons/releases/download/v0.1.0/ApprovalAgentCommons.mp4)
 
 ## What it does
